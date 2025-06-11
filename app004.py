@@ -1,1 +1,64 @@
-{"nbformat":4,"nbformat_minor":0,"metadata":{"colab":{"provenance":[],"mount_file_id":"1RJopod_OgEEdIig23CM3uQPJSelB26kf","authorship_tag":"ABX9TyMgla3hWe5hJCawqZoxcsmw"},"kernelspec":{"name":"python3","display_name":"Python 3"},"language_info":{"name":"python"}},"cells":[{"cell_type":"code","source":["import streamlit as st\n","import pandas as pd\n","import numpy as np\n","import joblib\n","\n","# 🚀 Page configuration\n","st.set_page_config(page_title=\"Medical Insurance Cost Predictor\", layout=\"centered\")\n","st.title(\"💰 Medical Insurance Cost Predictor\")\n","\n","# 🧠 Load trained pipeline model (includes preprocessor)\n","try:\n","    model = joblib.load(\"insurance_model_pipeline.joblib\")\n","except FileNotFoundError:\n","    st.error(\"Model file not found. Please ensure 'insurance_model_pipeline.joblib' is in the same directory.\")\n","    st.stop()\n","\n","# 📝 Input form\n","st.header(\"📋 Enter Your Information\")\n","\n","age = st.number_input(\"Age\", min_value=18, max_value=100, value=30, step=1)\n","bmi = st.number_input(\"BMI (Body Mass Index)\", min_value=10.0, max_value=60.0, value=25.0, step=0.1)\n","children = st.number_input(\"Number of Children\", min_value=0, max_value=10, value=0, step=1)\n","sex = st.selectbox(\"Sex\", options=[\"male\", \"female\"])\n","smoker = st.selectbox(\"Smoker\", options=[\"yes\", \"no\"])\n","region = st.selectbox(\"Region\", options=[\"northeast\", \"northwest\", \"southeast\", \"southwest\"])\n","\n","# 🧮 Prediction\n","if st.button(\"Predict Insurance Cost\"):\n","    try:\n","        # Create input dataframe\n","        input_data = pd.DataFrame({\n","            \"age\": [age],\n","            \"sex\": [sex],\n","            \"bmi\": [bmi],\n","            \"children\": [children],\n","            \"smoker\": [smoker],\n","            \"region\": [region]\n","        })\n","\n","        # Predict\n","        prediction = model.predict(input_data)[0]\n","\n","        # 💬 Output\n","        st.success(f\"Estimated Insurance Cost: **${prediction:,.2f}**\")\n","\n","    except Exception as e:\n","        st.error(f\"An error occurred during prediction:\\n\\n{str(e)}\")\n","\n","# 📘 About section\n","st.markdown(\"\"\"\n","---\n","### ℹ️ About This App\n","This application estimates **medical insurance costs** based on a machine learning model trained on features like:\n","- Age\n","- Sex\n","- BMI\n","- Number of children\n","- Smoking status\n","- Residential region\n","\n","The model was built using a fully integrated **scikit-learn pipeline**, including preprocessing and hyperparameter tuning.\n","\n","Make sure to enter realistic values to get a reliable prediction.\n","\"\"\")"],"metadata":{"id":"GC4HH0iA2puA"},"execution_count":null,"outputs":[]}]}
+import streamlit as st
+import pandas as pd
+import numpy as np
+import joblib
+
+# 🚀 Page configuration
+st.set_page_config(page_title="Medical Insurance Cost Predictor", layout="centered")
+st.title("💰 Medical Insurance Cost Predictor")
+
+# 🧠 Load trained pipeline model (includes preprocessor)
+try:
+    model = joblib.load("insurance_model_pipeline.joblib")
+except FileNotFoundError:
+    st.error("Model file not found. Please ensure 'insurance_model_pipeline.joblib' is in the same directory.")
+    st.stop()
+
+# 📝 Input form
+st.header("📋 Enter Your Information")
+
+age = st.number_input("Age", min_value=18, max_value=100, value=30, step=1)
+bmi = st.number_input("BMI (Body Mass Index)", min_value=10.0, max_value=60.0, value=25.0, step=0.1)
+children = st.number_input("Number of Children", min_value=0, max_value=10, value=0, step=1)
+sex = st.selectbox("Sex", options=["male", "female"])
+smoker = st.selectbox("Smoker", options=["yes", "no"])
+region = st.selectbox("Region", options=["northeast", "northwest", "southeast", "southwest"])
+
+# 🧮 Prediction
+if st.button("Predict Insurance Cost"):
+    try:
+        # Create input dataframe
+        input_data = pd.DataFrame({
+            "age": [age],
+            "sex": [sex],
+            "bmi": [bmi],
+            "children": [children],
+            "smoker": [smoker],
+            "region": [region]
+        })
+
+        # Predict
+        prediction = model.predict(input_data)[0]
+
+        # 💬 Output
+        st.success(f"Estimated Insurance Cost: **${prediction:,.2f}**")
+
+    except Exception as e:
+        st.error(f"An error occurred during prediction:\n\n{str(e)}")
+
+# 📘 About section
+st.markdown("""
+---
+### ℹ️ About This App
+This application estimates **medical insurance costs** based on a machine learning model trained on features like:
+- Age
+- Sex
+- BMI
+- Number of children
+- Smoking status
+- Residential region
+
+The model was built using a fully integrated **scikit-learn pipeline**, including preprocessing and hyperparameter tuning.
+
+Make sure to enter realistic values to get a reliable prediction.
+""")
