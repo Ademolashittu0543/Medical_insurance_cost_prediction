@@ -57,3 +57,20 @@ if submitted:
         
         except Exception as e:
             st.error(f"🚨 Error during prediction: {str(e)}")
+
+# 📘 About section
+st.markdown("""
+---
+### ℹ️ About This App
+This application estimates **medical insurance costs** based on a machine learning model trained on features like:
+- Age
+- Sex
+- BMI
+- Number of children
+- Smoking status
+- Residential region
+
+The model was built using a fully integrated **scikit-learn pipeline**, including preprocessing and hyperparameter tuning.
+
+Make sure to enter realistic values to get a reliable prediction.
+""")
