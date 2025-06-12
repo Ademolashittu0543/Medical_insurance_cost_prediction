@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+from sklearn.compose import ColumnTransformer
 
 # 🚀 Page configuration
 st.set_page_config(page_title="Medical Insurance Cost Predictor", layout="centered")
